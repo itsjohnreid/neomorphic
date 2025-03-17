@@ -40,28 +40,46 @@ struct ContentView: View {
                     Button("Colored Button") { }
                         .buttonStyle(.neomorphic(color: .teal))
                     
-                    VStack(spacing: 16) {
+                    VStack(spacing: 20) {
                         Text("Stacked Panels")
                             .font(.title3)
                             .bold()
                         
-                        VStack(spacing: 12) {
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.neomorphicWhite)
-                                .frame(height: 40)
-                                .padding()
-                                .neomorphic()
-                            
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.neomorphicBlack)
-                                .frame(height: 40)
-                                .padding()
-                                .neomorphic()
-                        }
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.neomorphicWhite)
+                            .frame(height: 40)
+                            .padding()
+                            .neomorphic()
+                        
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.neomorphicBlack)
+                            .frame(height: 40)
+                            .padding()
+                            .neomorphic()
                     }
                     .padding(12)
                     .neomorphic()
                     
+                    VStack {
+                        HStack(spacing: 4) {
+                            ForEach("QWERTYUIOP".map { String($0) }, id: \.self) { letter in
+                                letterButton(letter: letter)
+                            }
+                        }
+                        HStack(spacing: 4) {
+                            ForEach("ASDFGHJKL".map { String($0) }, id: \.self) { letter in
+                                letterButton(letter: letter)
+                            }
+                        }
+                        HStack(spacing: 4) {
+                            ForEach("ZXCVBNM".map { String($0) }, id: \.self) { letter in
+                                letterButton(letter: letter)
+                            }
+                        }
+                    }
+                    .padding(.vertical)
+                    
+                    Spacer(minLength: 40)
                 }
                 .padding(24)
             }
@@ -69,6 +87,14 @@ struct ContentView: View {
 //        .neomorphicTheme(.init(baseColor: .teal))
         .colorScheme(darkMode ? .dark : .light)
         .background(darkMode ? Color.neomorphicBlack : Color.neomorphicWhite, ignoresSafeAreaEdges: .all)
+    }
+    
+    func letterButton(letter: String) -> some View {
+        Button(action: { }) {
+            Text(letter)
+                .fixedSize()
+        }
+        .buttonStyle(.neomorphic(shape: .circle(size: 26)))
     }
 }
 

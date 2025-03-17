@@ -56,7 +56,6 @@ struct NeomorphicModifier: ViewModifier {
                     }
                 }
             )
-            .animation(.spring(response: 0.3, dampingFraction: 0.4, blendDuration: 0.2), value: isPressed)
     }
 }
 

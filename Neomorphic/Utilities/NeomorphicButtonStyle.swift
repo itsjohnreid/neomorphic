@@ -18,7 +18,7 @@ struct NeomorphicButtonStyle: ButtonStyle {
         configuration.label
             .foregroundStyle(.primary)
             .padding(.vertical, 12)
-            .padding(.horizontal, 12)
+            .padding(.horizontal, horizontalPadding)
             .frame(width: circleSize, height: circleSize)
             .neomorphic(color: color, cornerRadius: .infinity, isPressed: configuration.isPressed)
     }
@@ -68,7 +68,6 @@ extension ButtonStyle where Self == NeomorphicButtonStyle {
                 Image(systemName: "star.fill")
                 Text("Custom Button")
             }
-            .padding(.horizontal, 12)
         }
         .buttonStyle(.neomorphic)
         
