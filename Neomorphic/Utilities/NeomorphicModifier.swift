@@ -8,58 +8,51 @@
 import SwiftUI
 
 struct NeomorphicModifier: ViewModifier {
-    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.colorScheme) private var colorScheme // light or dark
     @Environment(\.neomorphicTheme) private var inheritedTheme
     
     let baseColor: Color?
-    var cornerRadius: CGFloat = 16
-    var shadowRadius: CGFloat = 10
-    var shadowOffset: CGFloat = 8
+    var cornerRadius: CGFloat = 20
+    var shadowRadius: CGFloat = 8
+    var shadowOffset: CGFloat = 9
     var isPressed: Bool = false
     
     private var effectiveColor: Color {
         if let color = baseColor {
             return color
+        } else if let inheritedColor = inheritedTheme.baseColor {
+            return inheritedColor
         }
-        if inheritedTheme.baseColor != NeomorphicTheme.default.baseColor {
-            return inheritedTheme.baseColor
-        }
-        return colorScheme == .light ? 
-            Color(white: 0.9) : 
-            Color(white: 0.15)
+        return defaultColor
+    }
+    
+    private var defaultColor: Color {
+        return colorScheme == .dark ? .neomorphicBlack : .neomorphicWhite
+    }
+    
+    private var shadowColor: Color {
+        inheritedTheme.baseColor ?? defaultColor
     }
     
     func body(content: Content) -> some View {
         content
-            .padding(12)
+            .padding(4)
             .background(
                 Group {
                     if isPressed {
-                        // Pressed state - concave effect
                         RoundedRectangle(cornerRadius: cornerRadius)
                             .fill(effectiveColor)
                             .overlay(
                                 RoundedRectangle(cornerRadius: cornerRadius)
-                                    .fill(effectiveColor.darkShadow.opacity(0.2))
+                                    .fill(effectiveColor.darkShadow.opacity(0.3))
                             )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: cornerRadius)
-                                    .strokeBorder(effectiveColor.lightShadow.opacity(0.3), lineWidth: 1)
-                                    .blur(radius: 2)
-                            )
-                            .shadow(color: effectiveColor.darkShadow, radius: shadowRadius, x: -shadowOffset, y: -shadowOffset)
-                            .shadow(color: effectiveColor.lightShadow, radius: shadowRadius, x: shadowOffset, y: shadowOffset)
+                            .shadow(color: shadowColor.darkShadow.opacity(0.7), radius: shadowRadius, x: -shadowOffset, y: -shadowOffset)
+                            .shadow(color: shadowColor.lightShadow.opacity(0.7), radius: shadowRadius, x: shadowOffset, y: shadowOffset)
                     } else {
-                        // Normal state - convex effect
                         RoundedRectangle(cornerRadius: cornerRadius)
                             .fill(effectiveColor)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: cornerRadius)
-                                    .strokeBorder(effectiveColor.lightShadow.opacity(0.3), lineWidth: 1)
-                                    .blur(radius: 2)
-                            )
-                            .shadow(color: effectiveColor.darkShadow, radius: shadowRadius, x: shadowOffset, y: shadowOffset)
-                            .shadow(color: effectiveColor.lightShadow, radius: shadowRadius, x: -shadowOffset, y: -shadowOffset)
+                            .shadow(color: shadowColor.darkShadow.opacity(0.7), radius: shadowRadius, x: shadowOffset, y: shadowOffset)
+                            .shadow(color: shadowColor.lightShadow.opacity(0.7), radius: shadowRadius, x: -shadowOffset, y: -shadowOffset)
                     }
                 }
             )
@@ -70,7 +63,7 @@ struct NeomorphicModifier: ViewModifier {
 extension View {
     func neomorphic(
         color: Color? = nil,
-        cornerRadius: CGFloat = 16,
+        cornerRadius: CGFloat = 20,
         isPressed: Bool = false
     ) -> some View {
         self.modifier(NeomorphicModifier(

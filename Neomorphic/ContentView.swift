@@ -8,56 +8,67 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var darkMode = false
+    
     var body: some View {
         ZStack {
             ScrollView {
                 VStack(spacing: 30) {
-                    Button("Hey", action: { })
-                        .buttonStyle(.neomorphic)
-                    
-                    // Uses inherited blue theme
-                    Button("Button") { }
-                        .buttonStyle(.neomorphic)
-                    
-                    // Overrides just this button's color
-                    Button("Button") { }
-                        .buttonStyle(.neomorphic)
-                        .neomorphicTheme(.init(baseColor: .blue))
-                    
-                    Text("Neomorphic Tiles")
+                    Text("Neomorphic")
                         .font(.largeTitle)
                         .bold()
                         .padding()
-                        .neomorphic()
                     
-                    // Another example with different depths
+                    Button("Nothing Button!") { }
+                        .fontWeight(.bold)
+                        .buttonStyle(.neomorphic)
+                    
+                    HStack(spacing: 20) {
+                        Button("😇") { }
+                            .buttonStyle(.neomorphic(shape: .circle(size: nil)))
+                        Button("🥺") { }
+                            .buttonStyle(.neomorphic(shape: .circle(size: nil)))
+                        Button("🤪") { }
+                            .buttonStyle(.neomorphic(shape: .circle(size: nil)))
+                    }
+                    .padding(20)
+                    .neomorphic(cornerRadius: .infinity)
+                    
+                    Button("Toggle Light/Dark") { darkMode.toggle() }
+                        .buttonStyle(.neomorphic)
+                    
+                    Button("Colored Button") { }
+                        .buttonStyle(.neomorphic(color: .teal))
+                    
                     VStack(spacing: 16) {
-                        Text("Stacked Depths")
+                        Text("Stacked Panels")
                             .font(.title3)
                             .bold()
                         
                         VStack(spacing: 12) {
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(Color(white: 0.95))
+                                .fill(Color.neomorphicWhite)
                                 .frame(height: 40)
+                                .padding()
                                 .neomorphic()
                             
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(Color(white: 0.95))
+                                .fill(Color.neomorphicBlack)
                                 .frame(height: 40)
+                                .padding()
                                 .neomorphic()
                         }
                     }
-                    .padding()
+                    .padding(12)
                     .neomorphic()
                     
                 }
                 .padding(24)
             }
         }
-        .neomorphic()
-//        .neomorphicTheme(.init(baseColor: .green))
-        .colorScheme(.dark)
+//        .neomorphicTheme(.init(baseColor: .teal))
+        .colorScheme(darkMode ? .dark : .light)
+        .background(darkMode ? Color.neomorphicBlack : Color.neomorphicWhite, ignoresSafeAreaEdges: .all)
     }
 }
 

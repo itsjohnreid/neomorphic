@@ -8,23 +8,15 @@
 import SwiftUI
 
 struct NeomorphicTheme {
-    let baseColor: Color
+    let baseColor: Color?
     
-    init(baseColor: Color) {
+    init(baseColor: Color? = nil) {
         self.baseColor = baseColor
-    }
-    
-    static var `default`: NeomorphicTheme {
-        NeomorphicTheme(baseColor: .init(white: 0.9))
-    }
-    
-    static var dark: NeomorphicTheme {
-        NeomorphicTheme(baseColor: .init(white: 0.15))
     }
 }
 
 private struct NeomorphicThemeKey: EnvironmentKey {
-    static let defaultValue = NeomorphicTheme.default
+    static let defaultValue = NeomorphicTheme()
 }
 
 extension EnvironmentValues {

@@ -2,30 +2,25 @@ import SwiftUI
 
 enum NeomorphicShape {
     case rectangle
-    case circle(size: CGFloat)
+    case circle(size: CGFloat?)
 }
 
 struct NeomorphicButtonStyle: ButtonStyle {
+    let color: Color?
     let shape: NeomorphicShape
     
-    init(shape: NeomorphicShape = .rectangle) {
+    init(color: Color? = nil, shape: NeomorphicShape = .rectangle) {
+        self.color = color
         self.shape = shape
     }
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundStyle(.primary)
+            .padding(.vertical, 12)
+            .padding(.horizontal, 12)
             .frame(width: circleSize, height: circleSize)
-            .neomorphic(cornerRadius: cornerRadius, isPressed: configuration.isPressed)
-    }
-    
-    private var cornerRadius: CGFloat {
-        switch shape {
-        case .rectangle:
-            return 16
-        case .circle:
-            return circleSize ?? 1
-        }
+            .neomorphic(color: color, cornerRadius: .infinity, isPressed: configuration.isPressed)
     }
     
     private var circleSize: CGFloat? {
@@ -36,6 +31,15 @@ struct NeomorphicButtonStyle: ButtonStyle {
             return size
         }
     }
+    
+    private var horizontalPadding: CGFloat {
+        switch shape {
+        case .circle:
+            return 12
+        case .rectangle:
+            return 16
+        }
+    }
 }
 
 extension ButtonStyle where Self == NeomorphicButtonStyle {
@@ -43,8 +47,8 @@ extension ButtonStyle where Self == NeomorphicButtonStyle {
         NeomorphicButtonStyle()
     }
     
-    static func neomorphic(shape: NeomorphicShape) -> NeomorphicButtonStyle {
-        NeomorphicButtonStyle(shape: shape)
+    static func neomorphic(color: Color? = nil, shape: NeomorphicShape = .rectangle) -> NeomorphicButtonStyle {
+        NeomorphicButtonStyle(color: color, shape: shape)
     }
 }
 
@@ -74,7 +78,7 @@ extension ButtonStyle where Self == NeomorphicButtonStyle {
         } label: {
             Image(systemName: "heart.fill")
         }
-        .buttonStyle(.neomorphic(shape: .circle(size: 60)))
+        .buttonStyle(.neomorphic(shape: .circle(size: 80)))
         
         // Small circular button
         Button {
@@ -82,8 +86,8 @@ extension ButtonStyle where Self == NeomorphicButtonStyle {
         } label: {
             Image(systemName: "plus")
         }
-        .buttonStyle(.neomorphic(shape: .circle(size: 44)))
+        .buttonStyle(.neomorphic(shape: .circle(size: nil)))
     }
     .padding(40)
-    .background(Color(white: 0.9))
+    .background(Color.neomorphicWhite)
 }
