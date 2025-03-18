@@ -13,8 +13,8 @@ struct NeomorphicModifier: ViewModifier {
     
     let baseColor: Color?
     var cornerRadius: CGFloat = 20
-    var shadowRadius: CGFloat = 8
-    var shadowOffset: CGFloat = 9
+    var shadowRadius: CGFloat = 6
+    var shadowOffset: CGFloat = 7
     var isPressed: Bool = false
     
     private var effectiveColor: Color {
@@ -44,15 +44,15 @@ struct NeomorphicModifier: ViewModifier {
                             .fill(effectiveColor)
                             .overlay(
                                 RoundedRectangle(cornerRadius: cornerRadius)
-                                    .fill(effectiveColor.darkShadow.opacity(0.3))
+                                    .fill(effectiveColor.darkShadow.opacity(0.1))
                             )
-                            .shadow(color: shadowColor.darkShadow.opacity(0.7), radius: shadowRadius, x: -shadowOffset, y: -shadowOffset)
-                            .shadow(color: shadowColor.lightShadow.opacity(0.7), radius: shadowRadius, x: shadowOffset, y: shadowOffset)
+                            .shadow(color: shadowColor.darkShadow.opacity(0.8), radius: shadowRadius, x: -shadowOffset, y: -shadowOffset)
+                            .shadow(color: shadowColor.lightShadow.opacity(0.8), radius: shadowRadius, x: shadowOffset, y: shadowOffset)
                     } else {
                         RoundedRectangle(cornerRadius: cornerRadius)
                             .fill(effectiveColor)
-                            .shadow(color: shadowColor.darkShadow.opacity(0.7), radius: shadowRadius, x: shadowOffset, y: shadowOffset)
-                            .shadow(color: shadowColor.lightShadow.opacity(0.7), radius: shadowRadius, x: -shadowOffset, y: -shadowOffset)
+                            .shadow(color: shadowColor.darkShadow.opacity(0.8), radius: shadowRadius, x: shadowOffset, y: shadowOffset)
+                            .shadow(color: shadowColor.lightShadow.opacity(0.8), radius: shadowRadius, x: -shadowOffset, y: -shadowOffset)
                     }
                 }
             )

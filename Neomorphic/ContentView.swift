@@ -9,84 +9,90 @@ import SwiftUI
 
 struct ContentView: View {
     @State var darkMode = false
+    @State var theme: Color? = nil
     
     var body: some View {
-        ZStack {
-            ScrollView {
-                VStack(spacing: 30) {
-                    Text("Neomorphic")
-                        .font(.largeTitle)
-                        .bold()
-                        .padding()
-                    
-                    Button("Nothing Button!") { }
+        ScrollView {
+            VStack(spacing: 30) {
+                Text("Neomorphic")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding()
+                
+                Button("Nothing Button!") { }
+                    .fontWeight(.bold)
+                    .buttonStyle(.neomorphic)
+                
+                HStack(spacing: 20) {
+                    Button("Teal") { theme = .teal}
+                        .foregroundStyle(.teal)
                         .fontWeight(.bold)
-                        .buttonStyle(.neomorphic)
+                        .buttonStyle(.neomorphic(shape: .circle(size: nil)))
                     
-                    HStack(spacing: 20) {
-                        Button("😇") { }
-                            .buttonStyle(.neomorphic(shape: .circle(size: nil)))
-                        Button("🥺") { }
-                            .buttonStyle(.neomorphic(shape: .circle(size: nil)))
-                        Button("🤪") { }
-                            .buttonStyle(.neomorphic(shape: .circle(size: nil)))
-                    }
-                    .padding(20)
-                    .neomorphic(cornerRadius: .infinity)
+                    Button("Orange") { theme = .orange}
+                        .foregroundStyle(.orange)
+                        .fontWeight(.bold)
+                        .buttonStyle(.neomorphic(shape: .circle(size: nil)))
                     
-                    Button("Toggle Light/Dark") { darkMode.toggle() }
-                        .buttonStyle(.neomorphic)
-                    
-                    Button("Colored Button") { }
-                        .buttonStyle(.neomorphic(color: .teal))
-                    
-                    VStack(spacing: 20) {
-                        Text("Stacked Panels")
-                            .font(.title3)
-                            .bold()
-                        
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.neomorphicWhite)
-                            .frame(height: 40)
-                            .padding()
-                            .neomorphic()
-                        
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.neomorphicBlack)
-                            .frame(height: 40)
-                            .padding()
-                            .neomorphic()
-                    }
-                    .padding(12)
-                    .neomorphic()
-                    
-                    VStack {
-                        HStack(spacing: 4) {
-                            ForEach("QWERTYUIOP".map { String($0) }, id: \.self) { letter in
-                                letterButton(letter: letter)
-                            }
-                        }
-                        HStack(spacing: 4) {
-                            ForEach("ASDFGHJKL".map { String($0) }, id: \.self) { letter in
-                                letterButton(letter: letter)
-                            }
-                        }
-                        HStack(spacing: 4) {
-                            ForEach("ZXCVBNM".map { String($0) }, id: \.self) { letter in
-                                letterButton(letter: letter)
-                            }
-                        }
-                    }
-                    .padding(.vertical)
-                    
-                    Spacer(minLength: 40)
+                    Button("Clear") { theme = nil}
+                        .fontWeight(.bold)
+                        .buttonStyle(.neomorphic(shape: .circle(size: nil)))
                 }
-                .padding(24)
+                .padding(20)
+                .neomorphic(cornerRadius: .infinity)
+                
+                Button("Toggle Light/Dark") { darkMode.toggle() }
+                    .buttonStyle(.neomorphic)
+                
+                Button("Colored Button") { }
+                    .buttonStyle(.neomorphic(color: .teal))
+                
+                VStack(spacing: 20) {
+                    Text("Stacked Panels")
+                        .font(.title3)
+                        .bold()
+                    
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.neomorphicWhite)
+                        .frame(height: 40)
+                        .padding()
+                        .neomorphic()
+                    
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.neomorphicBlack)
+                        .frame(height: 40)
+                        .padding()
+                        .neomorphic()
+                }
+                .padding(12)
+                .neomorphic()
+                
+                VStack {
+                    HStack(spacing: 4) {
+                        ForEach("QWERTYUIOP".map { String($0) }, id: \.self) { letter in
+                            letterButton(letter: letter)
+                        }
+                    }
+                    HStack(spacing: 4) {
+                        ForEach("ASDFGHJKL".map { String($0) }, id: \.self) { letter in
+                            letterButton(letter: letter)
+                        }
+                    }
+                    HStack(spacing: 4) {
+                        ForEach("ZXCVBNM".map { String($0) }, id: \.self) { letter in
+                            letterButton(letter: letter)
+                        }
+                    }
+                }
+                .padding(.vertical)
+                
+                Spacer(minLength: 40)
             }
+            .padding(24)
         }
-//        .neomorphicTheme(.init(baseColor: .teal))
+        .neomorphicTheme(.init(baseColor: theme))
+        .background(backgroundColor, ignoresSafeAreaEdges: .all)
         .colorScheme(darkMode ? .dark : .light)
-        .background(darkMode ? Color.neomorphicBlack : Color.neomorphicWhite, ignoresSafeAreaEdges: .all)
     }
     
     func letterButton(letter: String) -> some View {
@@ -95,6 +101,10 @@ struct ContentView: View {
                 .fixedSize()
         }
         .buttonStyle(.neomorphic(shape: .circle(size: 26)))
+    }
+    
+    private var backgroundColor: Color {
+        theme ?? (darkMode ? Color.neomorphicBlack : Color.neomorphicWhite)
     }
 }
 

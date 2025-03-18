@@ -1,46 +1,54 @@
 import SwiftUI
 
 extension Color {
-    static let neomorphicWhite = Color(white: 0.9)
-    static let neomorphicBlack = Color(white: 0.15)
+    static let neomorphicWhite = Color(white: 0.92)
+    static let neomorphicBlack = Color(white: 0.17)
     
     /// Convenience property for light shadow
     var lightShadow: Color {
-        self.neomorphic.light
+        self.neomorphicShadow.light
     }
     
     /// Convenience property for dark shadow
     var darkShadow: Color {
-        self.neomorphic.dark
+        self.neomorphicShadow.dark
     }
 }
 
 extension Color {
-    var neomorphic: (light: Color, dark: Color) {
+    var neomorphicShadow: (light: Color, dark: Color) {
         let uiColor = UIColor(self)
         var hue: CGFloat = 0
         var saturation: CGFloat = 0
         var brightness: CGFloat = 0
         var alpha: CGFloat = 0
         
+        if self == .neomorphicWhite {
+            return (Color(white: 0.999), Color(white: 0.78))
+        }
+        
+        if self == .neomorphicBlack {
+            return (Color(white: 0.23), Color(white: 0.1))
+        }
+        
         if uiColor.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
             let lightShadow = UIColor(
                 hue: hue,
-                saturation: max(saturation * 0.8, 0.0),
-                brightness: min(brightness * 1.2, 1.0),
+                saturation: saturation * 0.9,
+                brightness: brightness * 1.15,
                 alpha: 1
             )
             
             let darkShadow = UIColor(
                 hue: hue,
-                saturation: min(saturation * 1.1, 1.0),
-                brightness: max(brightness * 0.8, 0.0),
+                saturation: saturation * 1.1,
+                brightness: brightness * 0.75,
                 alpha: 1
             )
             
             return (Color(uiColor: lightShadow), Color(uiColor: darkShadow))
         } else {
-            return (.white, .black) // I don't think this actually happens?
+            return (.white, .black) // Fallback in case getHue doesn't resolve, which shouldn't ever really happen.
         }
     }
 }
